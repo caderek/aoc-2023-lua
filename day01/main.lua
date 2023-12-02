@@ -1,9 +1,15 @@
--- PART 1
-
 io.input("./day01/input.txt")
-local solution1 = 0
+
+local lines = {}
 
 for line in io.lines() do
+  table.insert(lines, line)
+end
+
+-- PART 1
+local solution1 = 0
+
+for _, line in ipairs(lines) do
   local nums = {}
 
   for num in string.gmatch(line, "%d") do
@@ -15,12 +21,11 @@ end
 
 -- PART 2
 
-io.input("./day01/input.txt")
 local solution2 = 0
 
 local numNames = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" }
 
-for line in io.lines() do
+for _, line in ipairs(lines) do
   local nums = ""
 
   for i = 1, #line do
