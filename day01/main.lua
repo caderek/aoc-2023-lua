@@ -47,7 +47,7 @@ for _, line in ipairs(lines) do
     end
   end
 
-  solution2 = solution2 + (nums:sub(1, 1) .. nums:sub(#nums, #nums))
+  solution2 = solution2 + (nums:sub(1, 1) .. nums:sub(#nums))
 end
 
 print("Part 2:", solution2)
