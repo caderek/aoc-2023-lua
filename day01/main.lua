@@ -7,6 +7,7 @@ for line in io.lines() do
 end
 
 -- PART 1
+
 local solution1 = 0
 
 for _, line in ipairs(lines) do
@@ -18,6 +19,8 @@ for _, line in ipairs(lines) do
 
   solution1 = solution1 + (nums[1] .. nums[#nums])
 end
+
+print("Part 1:", solution1)
 
 -- PART 2
 
@@ -47,5 +50,4 @@ for _, line in ipairs(lines) do
   solution2 = solution2 + (nums:sub(1, 1) .. nums:sub(#nums, #nums))
 end
 
-print("Part 1:", solution1)
 print("Part 2:", solution2)
