@@ -35,17 +35,11 @@ local function parseLine(line)
   return game
 end
 
-local function parseGames()
-  local games = {}
+local games = {}
 
-  for _, line in ipairs(lines) do
-    table.insert(games, parseLine(line))
-  end
-
-  return games
+for _, line in ipairs(lines) do
+  table.insert(games, parseLine(line))
 end
-
-local games = parseGames()
 
 -- PART 1
 
