@@ -13,7 +13,7 @@ local solution1 = 0
 for _, line in ipairs(lines) do
   local nums = {}
 
-  for num in string.gmatch(line, "%d") do
+  for num in line:gmatch("%d") do
     table.insert(nums, num)
   end
 
