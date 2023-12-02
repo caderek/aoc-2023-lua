@@ -6,6 +6,8 @@ for line in io.lines() do
   table.insert(lines, line)
 end
 
+-- PARSING
+
 local function parseLine(line)
   local game = {
     id = tonumber(line:match("%d+")),
