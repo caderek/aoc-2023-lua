@@ -35,9 +35,11 @@ end
 
 local function parseGames()
   local games = {}
+
   for _, line in ipairs(lines) do
     table.insert(games, parseLine(line))
   end
+
   return games
 end
 
