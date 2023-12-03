@@ -1,11 +1,5 @@
 io.input("./day02/input.txt")
 
-local lines = {}
-
-for line in io.lines() do
-  table.insert(lines, line)
-end
-
 -- PARSING
 
 local function parseLine(line)
@@ -37,7 +31,7 @@ end
 
 local games = {}
 
-for _, line in ipairs(lines) do
+for line in io.lines() do
   table.insert(games, parseLine(line))
 end
 
