@@ -32,6 +32,7 @@ for _, line in ipairs(lines) do
 
   while true do
     first, last = line:find("%d+", first + #num + 1)
+
     if not first then
       table.insert(numbers, row)
       break
@@ -56,11 +57,8 @@ local coords = {
 }
 
 local function getCell(grid, x, y)
-  if y > #grid or y < 1 then
-    return nil
-  end
-
-  if x > #grid[1] or x < 1 then
+  -- return nil if outside the grid
+  if (y > #grid or y < 1) and (x > #grid[1] or x < 1) then
     return nil
   end
 
@@ -69,10 +67,12 @@ end
 
 local function getDigitNeigbors(grid, x, y)
   local neighbors = {}
+
   for _, move in ipairs(coords) do
     local xx = x + move[1]
     local yy = y + move[2]
     local neighbor = getCell(grid, xx, yy)
+
     if neighbor ~= "." and neighbor:match("%d") then
       table.insert(neighbors, { digit = neighbor, x = xx, y = yy })
     end
