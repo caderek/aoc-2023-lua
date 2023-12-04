@@ -1,12 +1,12 @@
 io.input("./day03/input.txt")
 
--- PARSING GRID
-
 local lines = {}
 
 for line in io.lines() do
   table.insert(lines, line)
 end
+
+-- PARSING GRID
 
 local grid = {}
 
