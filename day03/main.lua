@@ -132,7 +132,6 @@ for y, row in ipairs(grid) do
       for _, neighbor in ipairs(neighbors) do
         for _, entry in ipairs(numbers[neighbor.y]) do
           if neighbor.x >= entry.from and neighbor.x <= entry.to then
-            solution1 = solution1 + entry.num
             table.insert(nums, entry.num)
           end
         end
