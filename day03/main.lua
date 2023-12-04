@@ -56,22 +56,13 @@ local coords = {
   { -1, -1 },
 }
 
-local function getCell(grid, x, y)
-  -- return nil if outside the grid
-  if (y > #grid or y < 1) and (x > #grid[1] or x < 1) then
-    return nil
-  end
-
-  return grid[y][x]
-end
-
 local function getDigitNeigbors(grid, x, y)
   local neighbors = {}
 
   for _, move in ipairs(coords) do
     local xx = x + move[1]
     local yy = y + move[2]
-    local neighbor = getCell(grid, xx, yy)
+    local neighbor = grid[yy][xx]
 
     if neighbor ~= "." and neighbor:match("%d") then
       table.insert(neighbors, { digit = neighbor, x = xx, y = yy })
