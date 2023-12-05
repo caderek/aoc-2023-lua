@@ -22,16 +22,6 @@ local function slice(list, from, to)
   return sliced
 end
 
-local function toSet(list)
-  local set = {}
-
-  for _, item in ipairs(list) do
-    set[item] = true
-  end
-
-  return set
-end
-
 local function toList(iterator)
   local list = {}
 
@@ -42,19 +32,28 @@ local function toList(iterator)
   return list
 end
 
+local function toSet(iterator)
+  local set = {}
+
+  for item in iterator do
+    set[item] = true
+  end
+
+  return set
+end
+
 -- PARSING
 
 local scratchcards = {}
 
 for line in io.lines() do
   local chunks = split(line, "|")
-  local nums = toList(chunks[1]:gmatch("%d+"))
-  local id = nums[1]
+  local leftNums = toList(chunks[1]:gmatch("%d+"))
+  local rightNums = toSet(chunks[2]:gmatch("%d+"))
 
   table.insert(scratchcards, {
-    id = id,
-    numbersYouHave = slice(nums, 2, #nums),
-    winningNumbers = toSet(toList(chunks[2]:gmatch("%d+"))),
+    numbersYouHave = slice(leftNums, 2, #leftNums),
+    winningNumbers = rightNums,
     copies = 1,
   })
 end
