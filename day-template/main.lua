@@ -1,20 +1,14 @@
 io.input("./day00/input.txt")
 
-local lines = {}
-
-for line in io.lines() do
-  table.insert(lines, line)
-end
+-- HELPERS
 
 -- PARSING
 
-local something = {}
+local input = {}
 
-for _, line in ipairs(lines) do
-  table.insert(something, nil)
+for line in io.lines() do
+  table.insert(input, line)
 end
-
--- HELPERS
 
 -- PART 1
 
