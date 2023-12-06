@@ -1,4 +1,4 @@
-local inspect = require("utils.inspect")
+require("utils.pretty-print")
 
 -- HELPERS
 
@@ -148,6 +148,8 @@ for _, seed in ipairs(data.seeds) do
 
   table.insert(finalDestinations, source)
 end
+
+print("Destinations:", finalDestinations)
 
 local solution1 = math.min(table.unpack(finalDestinations))
 

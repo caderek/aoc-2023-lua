@@ -1,3 +1,4 @@
+require("utils.pretty-print")
 io.input("./day00/input.txt")
 
 -- HELPERS
