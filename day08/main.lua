@@ -7,7 +7,7 @@ io.input("./day08/input.txt")
 
 local input = {
   steps = "",
-  map = {},
+  network = {},
 }
 
 local lineNumber = 1
@@ -19,7 +19,7 @@ for line in io.lines() do
 
   if lineNumber > 2 then
     local label, left, right = unpack(util.toList(line:gmatch("%w+")))
-    input.map[label] = { L = left, R = right }
+    input.network[label] = { L = left, R = right }
   end
 
   lineNumber = lineNumber + 1
@@ -57,7 +57,7 @@ do
 
     local side = input.steps:sub(moveIndex + 1, moveIndex + 1)
 
-    current = input.map[current][side]
+    current = input.network[current][side]
     solution1 = solution1 + 1
 
     if current == "ZZZ" then
@@ -73,7 +73,7 @@ end
 -- PART 2
 
 do
-  local current = util.filter(util.keys(input.map), function(label)
+  local current = util.filter(util.keys(input.network), function(label)
     return label:match("A$")
   end)
 
@@ -85,7 +85,7 @@ do
       if not current[i]:match("Z$") then
         local side = input.steps:sub(moveIndex + 1, moveIndex + 1)
 
-        current[i] = input.map[current[i]][side]
+        current[i] = input.network[current[i]][side]
         steps[i] = (steps[i] or 0) + 1
       end
     end
