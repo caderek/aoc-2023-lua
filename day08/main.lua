@@ -25,7 +25,7 @@ for line in io.lines() do
   lineNumber = lineNumber + 1
 end
 
--- UTILS
+-- UTILS (taken from: https://rosettacode.org/wiki/Least_common_multiple#Lua)
 
 local function gcd(m, n)
   while n ~= 0 do
