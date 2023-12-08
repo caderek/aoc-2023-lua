@@ -1,4 +1,3 @@
-local inspect = require("./utils.inspect")
 local rawPrint = print
 
 local styles = {

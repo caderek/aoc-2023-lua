@@ -37,7 +37,7 @@ end
 local function slice(list, from, to)
   local sliced = {}
 
-  for _, val in ipairs({ table.unpack(list, from, to) }) do
+  for _, val in ipairs({ unpack(list, from, to) }) do
     table.insert(sliced, val)
   end
 
@@ -151,7 +151,7 @@ end
 
 print("Destinations:", finalDestinations)
 
-local solution1 = math.min(table.unpack(finalDestinations))
+local solution1 = math.min(unpack(finalDestinations))
 
 print("Part 1:", solution1)
 
