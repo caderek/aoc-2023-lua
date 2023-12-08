@@ -132,6 +132,16 @@ function util.reduce(list, reducer, initial)
   return result
 end
 
+function util.every(list, predicate)
+  for index, item in ipairs(list) do
+    if not predicate(item, index) then
+      return false
+    end
+  end
+
+  return true
+end
+
 function util.toDecimal(x)
   return tonumber(x, 10)
 end
