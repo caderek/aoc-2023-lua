@@ -47,14 +47,9 @@ do
   local solution1 = 0
   local current = "AAA"
 
-  local i = 1
   local moveIndex = 0
 
   while true do
-    if i == 10 then
-      break
-    end
-
     local side = input.steps:sub(moveIndex + 1, moveIndex + 1)
 
     current = input.network[current][side]
