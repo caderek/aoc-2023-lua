@@ -62,6 +62,7 @@ local function gcd(m, n)
     m = n
     n = q % n
   end
+
   return m
 end
 
