@@ -8,11 +8,12 @@ io.input("./day07/input.txt")
 local input = {}
 
 for line in io.lines() do
-  local parts = util.split(line, " ")
-  local hand = util.split(parts[1])
-  local bid = tonumber(parts[2])
+  local rawHand, rawBid = unpack(util.split(line, " "))
 
-  table.insert(input, { hand = hand, bid = bid })
+  table.insert(input, {
+    hand = util.split(rawHand),
+    bid = tonumber(rawBid),
+  })
 end
 
 -- SHARED
