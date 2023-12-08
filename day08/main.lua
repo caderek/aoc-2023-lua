@@ -94,9 +94,7 @@ do
     moveIndex = (moveIndex + 1) % #input.steps
   end
 
-  local solution2 = util.reduce(steps, function(acc, x)
-    return lcm(acc, x)
-  end, 1)
+  local solution2 = util.reduce(steps, lcm)
 
   print("Part 2:", solution2)
 end

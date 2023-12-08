@@ -123,6 +123,11 @@ function util.filter(list, predicate)
 end
 
 function util.reduce(list, reducer, initial)
+  if initial == nil then
+    initial = list[1]
+    list = util.slice(list, 2, #list)
+  end
+
   local result = initial
 
   for index, item in ipairs(list) do
