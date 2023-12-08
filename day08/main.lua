@@ -25,6 +25,22 @@ for line in io.lines() do
   lineNumber = lineNumber + 1
 end
 
+-- UTILS
+
+local function gcd(m, n)
+  while n ~= 0 do
+    local q = m
+    m = n
+    n = q % n
+  end
+
+  return m
+end
+
+local function lcm(m, n)
+  return (m ~= 0 and n ~= 0) and m * n / gcd(m, n) or 0
+end
+
 -- PART 1
 
 do
@@ -55,20 +71,6 @@ do
 end
 
 -- PART 2
-
-local function gcd(m, n)
-  while n ~= 0 do
-    local q = m
-    m = n
-    n = q % n
-  end
-
-  return m
-end
-
-local function lcm(m, n)
-  return (m ~= 0 and n ~= 0) and m * n / gcd(m, n) or 0
-end
 
 do
   local current = util.filter(util.keys(input.map), function(label)
