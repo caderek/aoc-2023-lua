@@ -70,14 +70,11 @@ local function lcm(m, n)
 end
 
 do
-  local steps = {}
-
-  local solution2 = 0
-
   local current = util.filter(util.keys(input.map), function(label)
     return label:match("A$")
   end)
 
+  local steps = {}
   local moveIndex = 0
 
   while true do
