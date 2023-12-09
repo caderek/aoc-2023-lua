@@ -22,13 +22,14 @@ local function extrapolate(nums, backwards)
     return 0
   end
 
-  local sign = backwards and -1 or 1
-  local index = backwards and 1 or #nums
   local next = {}
 
   for i = 1, #nums - 1 do
     next[i] = nums[i + 1] - nums[i]
   end
+
+  local sign = backwards and -1 or 1
+  local index = backwards and 1 or #nums
 
   return nums[index] + extrapolate(next, backwards) * sign
 end
