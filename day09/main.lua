@@ -17,7 +17,7 @@ local function isZero(x)
   return x == 0
 end
 
-local function extrapolate(nums, backwards)
+local function extrapolate(nums)
   if util.every(nums, isZero) then
     return 0
   end
@@ -28,7 +28,7 @@ local function extrapolate(nums, backwards)
     next[i] = nums[i + 1] - nums[i]
   end
 
-  return nums[#nums] + extrapolate(next, backwards)
+  return nums[#nums] + extrapolate(next)
 end
 
 local solution1 = 0
