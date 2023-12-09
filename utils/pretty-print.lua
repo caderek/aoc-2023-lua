@@ -86,11 +86,29 @@ local function formatNumericTable(table, formatFn)
   return output
 end
 
-local function formatGenericTable(tab, formatFn)
-  local items = {}
+local function formatGenericTable(tab, formatFn, indentLevel)
+  indentLevel = indentLevel or 0
 
-  for key, val in pairs(tab) do
-    local item = formatKey(key, formatFn) .. " = " .. formatFn(val, true)
+  local indentBase = "  "
+  local indent = indentBase
+  local smallIndent = ""
+
+  for _ = 1, indentLevel do
+    indent = indent .. indentBase
+    smallIndent = smallIndent .. indentBase
+  end
+
+  local items = {}
+  local keys = {}
+
+  for key in pairs(tab) do
+    table.insert(keys, key)
+  end
+
+  table.sort(keys)
+
+  for i = 1, #keys do
+    local item = formatKey(keys[i], formatFn) .. " = " .. formatFn(tab[keys[i]], true, indentLevel + 1)
 
     table.insert(items, item)
   end
@@ -99,30 +117,26 @@ local function formatGenericTable(tab, formatFn)
     return "{}"
   end
 
-  local output = "{ "
+  local output = "{\n"
 
-  for i, val in ipairs(items) do
-    output = output .. val
-
-    if i ~= #items then
-      output = output .. ", "
-    end
+  for _, val in ipairs(items) do
+    output = output .. indent .. val .. ",\n"
   end
 
-  output = output .. " }"
+  output = output .. smallIndent .. "}"
 
   return output
 end
 
-local function formatTable(table, formatFn)
+local function formatTable(table, formatFn, indent)
   if isNumericTable(table) then
     return formatNumericTable(table, formatFn)
   end
 
-  return formatGenericTable(table, formatFn)
+  return formatGenericTable(table, formatFn, indent)
 end
 
-local function formatValue(val, quoteStrings)
+local function formatValue(val, quoteStrings, indent)
   if type(val) == "number" then
     return formatNumber(val)
   end
@@ -140,7 +154,7 @@ local function formatValue(val, quoteStrings)
   end
 
   if type(val) == "table" then
-    return formatTable(val, formatValue)
+    return formatTable(val, formatValue, indent)
   end
 
   return tostring(val)
@@ -161,14 +175,3 @@ local function prettyPrint(...)
 end
 
 print = prettyPrint
-
--- TODO: sort keys in deterministic manner (now they are in random order)
--- TODO: format tables with indents and stuff
--- WARNING: if I use terminal width detection it may impact performance
-
--- print("hello", "world")
--- print({})
--- print({ 1, 2, 3 })
--- print({ 123, "foo", true, function() end })
--- print({ ["my-name"] = "Maciek", age = 34, isProgrammer = true, last = 123 })
--- print({ "foo", "bar", { "baz", "bat" }, { hello = "world", hi = 123 } })
