@@ -61,6 +61,16 @@ function util.slice(list, from, to)
   return sliced
 end
 
+function util.reverse(list)
+  local reversed = {}
+
+  for i = 1, #list do
+    reversed[i] = list[#list - i + 1]
+  end
+
+  return reversed
+end
+
 function util.toList(iterator)
   local list = {}
 
