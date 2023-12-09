@@ -123,15 +123,17 @@ function util.filter(list, predicate)
 end
 
 function util.reduce(list, reducer, initial)
+  local start = 1
+
   if initial == nil then
     initial = list[1]
-    list = util.slice(list, 2, #list)
+    start = 2
   end
 
   local result = initial
 
-  for index, item in ipairs(list) do
-    result = reducer(result, item, index)
+  for i = start, #list do
+    result = reducer(result, list[i], i)
   end
 
   return result
