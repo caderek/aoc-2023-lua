@@ -20,13 +20,12 @@ local function isZero(x)
 end
 
 local function extrapolate(nums, backwards)
-  local sign = backwards and -1 or 1
-  local index = backwards and 1 or #nums
-
   if util.every(nums, isZero) then
     return 0
   end
 
+  local sign = backwards and -1 or 1
+  local index = backwards and 1 or #nums
   local next = {}
 
   for i = 1, #nums - 1 do
