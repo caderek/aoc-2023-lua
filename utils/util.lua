@@ -17,6 +17,15 @@ function util.readFile(path)
   return content
 end
 
+function util.readInput(inputFile)
+  inputFile = inputFile or "input.txt"
+
+  local dir = util.split(debug.getinfo(2).short_src, "/")[1]
+  local path = dir .. "/" .. inputFile
+
+  return util.readFile(path)
+end
+
 function util.split(str, delimiter)
   local chunks = {}
   local temp = ""
@@ -35,7 +44,9 @@ function util.split(str, delimiter)
     end
   end
 
-  table.insert(chunks, temp)
+  if temp ~= "" then
+    table.insert(chunks, temp)
+  end
 
   return chunks
 end

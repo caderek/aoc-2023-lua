@@ -21,3 +21,5 @@ lua dayXX/main.lua
 ```
 
 where `XX` is a day number (for example `01`).
+
+_Note: `day00` directory contains a template for creating specific day directories_

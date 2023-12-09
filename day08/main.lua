@@ -1,28 +1,21 @@
 require("utils.pretty-print")
 local util = require("utils.util")
 
-io.input("./day08/input.txt")
+local raw = util.readFile("./day08/input.txt")
 
 -- PARSING
 
-local input = {
-  steps = "",
-  network = {},
-}
+local input = { steps = "", network = {} }
 
-local lineNumber = 1
+do
+  local steps, entries = unpack(util.split(raw, "\n\n"))
 
-for line in io.lines() do
-  if lineNumber == 1 then
-    input.steps = line
-  end
+  input.steps = steps
 
-  if lineNumber > 2 then
+  for _, line in ipairs(util.split(entries, "\n")) do
     local label, left, right = unpack(util.toList(line:gmatch("%w+")))
     input.network[label] = { L = left, R = right }
   end
-
-  lineNumber = lineNumber + 1
 end
 
 -- PART 1
