@@ -1,4 +1,8 @@
-local util = {}
+local math = require("utils.math")
+
+local util = {
+  math = math,
+}
 
 function util.readFile(path)
   local file = io.open(path, "rb")

@@ -25,22 +25,6 @@ for line in io.lines() do
   lineNumber = lineNumber + 1
 end
 
--- UTILS (taken from: https://rosettacode.org/wiki/Least_common_multiple#Lua)
-
-local function gcd(m, n)
-  while n ~= 0 do
-    local q = m
-    m = n
-    n = q % n
-  end
-
-  return m
-end
-
-local function lcm(m, n)
-  return (m ~= 0 and n ~= 0) and m * n / gcd(m, n) or 0
-end
-
 -- PART 1
 
 do
@@ -94,7 +78,7 @@ do
     moveIndex = (moveIndex + 1) % #input.steps
   end
 
-  local solution2 = util.reduce(steps, lcm)
+  local solution2 = util.reduce(steps, util.math.lcm)
 
   print("Part 2:", solution2)
 end
