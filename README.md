@@ -13,7 +13,11 @@ To run the solutions, create `input.txt` file in a directory for a specific day,
 and run:
 
 ```sh
+# for LuaJIT:
 luajit dayXX/main.lua
+
+# for Lua 5.1:
+lua dayXX/main.lua
 ```
 
 where `XX` is a day number (for example `01`).
