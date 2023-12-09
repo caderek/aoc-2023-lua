@@ -13,11 +13,13 @@ do
   end
 end
 
--- PART 1
+-- HELPERS
 
 local function isZero(x)
   return x == 0
 end
+
+-- PART 1
 
 local function extrapolate(nums)
   if util.every(nums, isZero) then
@@ -33,6 +35,18 @@ local function extrapolate(nums)
   return nums[#nums] + extrapolate(next)
 end
 
+do
+  local solution1 = 0
+
+  for _, nums in ipairs(input) do
+    solution1 = solution1 + extrapolate(nums)
+  end
+
+  print("Part 1:", solution1)
+end
+
+-- PART 2
+
 local function extrapolateBackwards(nums)
   if util.every(nums, isZero) then
     return nums[1]
@@ -46,18 +60,6 @@ local function extrapolateBackwards(nums)
 
   return nums[1] - extrapolateBackwards(next)
 end
-
-do
-  local solution1 = 0
-
-  for _, nums in ipairs(input) do
-    solution1 = solution1 + extrapolate(nums)
-  end
-
-  print("Part 1:", solution1)
-end
-
--- PART 2
 
 do
   local solution2 = 0
