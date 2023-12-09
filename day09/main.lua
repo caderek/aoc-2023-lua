@@ -7,10 +7,8 @@ local raw = util.readInput()
 
 local input = {}
 
-do
-  for _, line in ipairs(util.split(raw, "\n")) do
-    table.insert(input, util.map(util.toList(line:gmatch("[-]*%d+")), util.toDecimal))
-  end
+for _, line in ipairs(util.split(raw, "\n")) do
+  table.insert(input, util.map(util.toList(line:gmatch("[-]*%d+")), util.toDecimal))
 end
 
 -- COMMON
@@ -37,24 +35,20 @@ end
 
 -- PART 1
 
-do
-  local solution1 = 0
+local solution1 = 0
 
-  for _, nums in ipairs(input) do
-    solution1 = solution1 + extrapolate(nums)
-  end
-
-  print("Part 1:", solution1)
+for _, nums in ipairs(input) do
+  solution1 = solution1 + extrapolate(nums)
 end
+
+print("Part 1:", solution1)
 
 -- PART 2
 
-do
-  local solution2 = 0
+local solution2 = 0
 
-  for _, nums in ipairs(input) do
-    solution2 = solution2 + extrapolate(nums, true)
-  end
-
-  print("Part 2:", solution2)
+for _, nums in ipairs(input) do
+  solution2 = solution2 + extrapolate(nums, true)
 end
+
+print("Part 2:", solution2)
