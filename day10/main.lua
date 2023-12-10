@@ -68,7 +68,7 @@ end
 
 -- PART 1
 
-local prev = nil
+local prev = graph[start][1]
 local current = start
 local loop = { start }
 
@@ -76,13 +76,9 @@ while true do
   local edges = graph[current]
   local next
 
-  if not prev then
-    next = edges[1]
-  else
-    next = util.find(edges, function(item)
-      return item ~= prev
-    end)
-  end
+  next = util.find(edges, function(item)
+    return item ~= prev
+  end)
 
   prev = current
   current = next
