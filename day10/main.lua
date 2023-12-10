@@ -143,13 +143,13 @@ local poly = util.reduce(loop, function(acc, node)
   return acc
 end, {})
 
-local loopPints = util.toSet(loop)
+local loopPoints = util.toSet(loop)
 local solution2 = 0
 local isInPoly = isInPolySolver(poly)
 
 for y = 1, #grid do
   for x = 1, #grid[1] do
-    if not loopPints[pointToLabel(x, y)] and isInPoly(x, y) then
+    if not loopPoints[pointToLabel(x, y)] and isInPoly(x, y) then
       solution2 = solution2 + 1
     end
   end
