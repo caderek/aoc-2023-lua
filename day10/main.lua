@@ -90,9 +90,10 @@ local solution1 = math.floor(#loop / 2)
 print("Part 1:", solution1)
 
 -- PART 2
+--
+--
 
-local function isInPoly(x, y, poly)
-  local isInside = false
+local function isInPolySolver(poly)
   local minX = poly[1].x
   local maxX = poly[1].x
   local minY = poly[1].y
@@ -106,24 +107,28 @@ local function isInPoly(x, y, poly)
     maxY = math.max(vertex.y, maxY)
   end
 
-  if x < minX or x > maxX or y < minY or y > maxY then
-    return false
-  end
+  return function(x, y)
+    local isInside = false
 
-  local j = #poly
-
-  for i = 1, #poly do
-    if
-      (poly[i].y > y) ~= (poly[j].y > y)
-      and x < (poly[j].x - poly[i].x) * (y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x
-    then
-      isInside = not isInside
+    if x < minX or x > maxX or y < minY or y > maxY then
+      return false
     end
 
-    j = i
-  end
+    local j = #poly
 
-  return isInside
+    for i = 1, #poly do
+      if
+        (poly[i].y > y) ~= (poly[j].y > y)
+        and x < (poly[j].x - poly[i].x) * (y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x
+      then
+        isInside = not isInside
+      end
+
+      j = i
+    end
+
+    return isInside
+  end
 end
 
 local function isVertex(x, y)
@@ -142,10 +147,11 @@ end, {})
 
 local loopPints = util.toSet(loop)
 local solution2 = 0
+local isInPoly = isInPolySolver(poly)
 
 for y = 1, #grid do
   for x = 1, #grid[1] do
-    if not loopPints[pointToLabel(x, y)] and isInPoly(x, y, poly) then
+    if not loopPints[pointToLabel(x, y)] and isInPoly(x, y) then
       solution2 = solution2 + 1
     end
   end
