@@ -72,7 +72,7 @@ local prev = graph[start][1]
 local current = start
 local loop = { start }
 
-while true do
+repeat
   local edges = graph[current]
   local next
 
@@ -83,11 +83,7 @@ while true do
   prev = current
   current = next
   table.insert(loop, next)
-
-  if current == start then
-    break
-  end
-end
+until current == start
 
 local solution1 = math.floor(#loop / 2)
 
