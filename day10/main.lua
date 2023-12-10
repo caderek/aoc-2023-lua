@@ -2,7 +2,6 @@ require("utils.pretty-print")
 local util = require("utils.util")
 
 local raw = util.readInput()
--- local raw = util.readInput("example2.txt")
 
 -- PARSING
 
@@ -11,6 +10,8 @@ local grid = {}
 for _, line in ipairs(util.split(raw, "\n")) do
   table.insert(grid, util.split(line))
 end
+
+-- CREATING A GRAPH
 
 local dirs = {
   ["F"] = { { dx = 1, dy = 0 }, { dx = 0, dy = 1 } },
