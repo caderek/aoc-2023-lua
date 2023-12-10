@@ -160,6 +160,3 @@ for y = 1, #grid do
 end
 
 print("Part 2:", solution2)
-
--- assert(solution1 == 6927)
--- assert(solution2 == 467)
