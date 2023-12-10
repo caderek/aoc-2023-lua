@@ -96,10 +96,12 @@ local function isInPoly(poly, x, y)
   local j = #poly
 
   for i = 1, #poly do
-    if
-      (poly[i].y > y) ~= (poly[j].y > y)
-      and x < (poly[j].x - poly[i].x) * (y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x
-    then
+    local xi = poly[i].x
+    local xj = poly[j].x
+    local yi = poly[i].y
+    local yj = poly[j].y
+
+    if (yi > y) ~= (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi then
       isInside = not isInside
     end
 
