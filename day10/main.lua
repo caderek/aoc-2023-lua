@@ -92,10 +92,10 @@ print("Part 1:", solution1)
 -- PART 2
 
 local function isInPolySolver(poly)
-  local minX = -math.huge
-  local maxX = math.huge
-  local minY = -math.huge
-  local maxY = math.huge
+  local minX = math.huge
+  local maxX = -math.huge
+  local minY = math.huge
+  local maxY = -math.huge
 
   for i = 1, #poly do
     local vertex = poly[i]
