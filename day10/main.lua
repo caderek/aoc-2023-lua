@@ -153,7 +153,7 @@ local solution2 = 0
 
 for y = 1, #grid do
   for x = 1, #grid[1] do
-    if not loopPints[x .. ":" .. y] and isInPoly(x, y, poly) then
+    if not loopPints[pointToLabel(x, y)] and isInPoly(x, y, poly) then
       solution2 = solution2 + 1
     end
   end
