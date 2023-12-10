@@ -90,8 +90,6 @@ local solution1 = math.floor(#loop / 2)
 print("Part 1:", solution1)
 
 -- PART 2
---
---
 
 local function isInPolySolver(poly)
   local minX = -math.huge
