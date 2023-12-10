@@ -104,8 +104,14 @@ end
 function util.toSet(iterator)
   local set = {}
 
-  for item in iterator do
-    set[item] = true
+  if type(iterator) == "table" then
+    for _, item in ipairs(iterator) do
+      set[item] = true
+    end
+  else
+    for item in iterator do
+      set[item] = true
+    end
   end
 
   return set
@@ -129,7 +135,7 @@ function util.map(list, transformation)
   local result = {}
 
   for index, item in ipairs(list) do
-    table.insert(result, transformation(item, index))
+    table.insert(result, transformation(item, index, list))
   end
 
   return result
@@ -140,7 +146,7 @@ function util.filter(list, predicate)
 
   for index, item in ipairs(list) do
     if predicate(item, index) then
-      table.insert(result, item)
+      table.insert(result, item, list)
     end
   end
 
@@ -158,7 +164,7 @@ function util.reduce(list, reducer, initial)
   local result = initial
 
   for i = start, #list do
-    result = reducer(result, list[i], i)
+    result = reducer(result, list[i], i, list)
   end
 
   return result
@@ -166,12 +172,32 @@ end
 
 function util.every(list, predicate)
   for index, item in ipairs(list) do
-    if not predicate(item, index) then
+    if not predicate(item, index, list) then
       return false
     end
   end
 
   return true
+end
+
+function util.some(list, predicate)
+  for index, item in ipairs(list) do
+    if predicate(item, index, list) then
+      return true
+    end
+  end
+
+  return false
+end
+
+function util.find(list, predicate)
+  for index, item in ipairs(list) do
+    if predicate(item, index, list) then
+      return item
+    end
+  end
+
+  return nil
 end
 
 function util.toDecimal(x)
