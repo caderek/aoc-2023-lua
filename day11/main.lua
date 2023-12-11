@@ -15,8 +15,8 @@ for y, line in ipairs(util.split(raw, "\n")) do
   for x, point in ipairs(util.split(line)) do
     if point == "#" then
       table.insert(input.points, { x, y })
-      input.shiftedX[x] = 0
-      input.shiftedY[y] = 0
+      input.shiftedX[x] = x
+      input.shiftedY[y] = y
     end
   end
 end
