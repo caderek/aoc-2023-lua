@@ -23,7 +23,7 @@ end
 
 -- COMMON
 
-local function shiftIndicies(mapping, expacstionSize)
+local function shiftIndicies(mapping, expansionSize)
   local additional = 0
   local nums = util.sort(util.keys(mapping))
 
@@ -32,7 +32,7 @@ local function shiftIndicies(mapping, expacstionSize)
     local diff = nums[i] - prev
 
     if diff > 1 then
-      additional = additional + (diff - 1) * expacstionSize - 1
+      additional = additional + (diff - 1) * expansionSize - 1
     end
 
     mapping[num] = num + additional
