@@ -73,8 +73,8 @@ print("Part 1:", solution1)
 
 -- PART 2
 
-shiftIndicies(input.shiftedX, 1000000)
-shiftIndicies(input.shiftedY, 1000000)
+shiftIndicies(input.shiftedX, 1e6)
+shiftIndicies(input.shiftedY, 1e6)
 local solution2 = getSumOfDistances()
 
 print("Part 2:", solution2)
