@@ -1,123 +1,20 @@
 require("utils.pretty-print")
-
--- HELPERS
-
-local function readFile(path)
-  local file = io.open(path, "rb")
-
-  if not file then
-    return nil
-  end
-
-  local content = file:read("*all")
-  file:close()
-
-  return content
-end
-
-local function split(str, delimiter)
-  local chunks = {}
-  local temp = ""
-
-  for i = 1, #str do
-    temp = temp .. str:sub(i, i)
-    local last = temp:sub(#temp - #delimiter + 1)
-
-    if last == delimiter then
-      table.insert(chunks, temp:sub(1, #temp - #delimiter))
-      temp = ""
-    end
-  end
-
-  table.insert(chunks, temp)
-
-  return chunks
-end
-
-local function slice(list, from, to)
-  local sliced = {}
-
-  for _, val in ipairs({ unpack(list, from, to) }) do
-    table.insert(sliced, val)
-  end
-
-  return sliced
-end
-
-local function toList(iterator)
-  local list = {}
-
-  for item in iterator do
-    table.insert(list, item)
-  end
-
-  return list
-end
-
-local function chunk(list, chunkSize)
-  local chunks = { {} }
-
-  for _, item in ipairs(list) do
-    if #chunks[#chunks] == chunkSize then
-      table.insert(chunks, { item })
-    else
-      table.insert(chunks[#chunks], item)
-    end
-  end
-
-  return chunks
-end
-
-local function map(list, transformation)
-  local result = {}
-
-  for index, item in ipairs(list) do
-    table.insert(result, transformation(item, index))
-  end
-
-  return result
-end
-
-local function filter(list, predicate)
-  local result = {}
-
-  for index, item in ipairs(list) do
-    if predicate(item, index) then
-      table.insert(result, item)
-    end
-  end
-
-  return result
-end
-
-local function reduce(list, reducer, initial)
-  local result = initial
-
-  for index, item in ipairs(list) do
-    result = reducer(result, item, index)
-  end
-
-  return result
-end
-
-local function toDecimal(x)
-  return tonumber(x, 10)
-end
+local util = require("utils.util")
 
 -- PARSING
 
--- local input = readFile("./day05/input.txt")
-local input = readFile("./day05/example.txt")
-local parts = split(input, "\n\n")
+-- local input = util.readInput()
+local input = util.readInput("example.txt")
+local parts = util.split(input, "\n\n")
 
 local data = {
-  seeds = map(toList(slice(parts, 1, 1)[1]:gmatch("%d+")), toDecimal),
+  seeds = util.map(util.toList(util.slice(parts, 1, 1)[1]:gmatch("%d+")), util.toDecimal),
   maps = {},
 }
 
-for _, part in ipairs(slice(parts, 2, #parts)) do
-  local rows = map(toList(part:gmatch("%d+")), toDecimal)
-  table.insert(data.maps, chunk(rows, 3))
+for _, part in ipairs(util.slice(parts, 2, #parts)) do
+  local rows = util.map(util.toList(part:gmatch("%d+")), util.toDecimal)
+  table.insert(data.maps, util.chunk(rows, 3))
 end
 
 -- PART 1
@@ -149,14 +46,100 @@ for _, seed in ipairs(data.seeds) do
   table.insert(finalDestinations, source)
 end
 
-print("Destinations:", finalDestinations)
-
 local solution1 = math.min(unpack(finalDestinations))
 
 print("Part 1:", solution1)
 
 -- PART 2
 
-local solution2 = 0
+local function sortRanges(ranges)
+  table.sort(ranges, function(a, b)
+    return a[1] < b[1]
+  end)
+
+  return ranges
+end
+
+local function getStartRanges(seeds)
+  return sortRanges(util.map(util.chunk(seeds, 2), function(item)
+    return { item[1], item[1] + item[2] - 1 }
+  end))
+end
+
+local function getFullRanges(baseRanges)
+  -- sortRanges(baseRanges)
+
+  local allRanges = {}
+
+  local allLimits = util.flat(baseRanges)
+
+  table.insert(allRanges, { -math.huge, math.min(unpack(allLimits)) - 1 })
+
+  for _, range in ipairs(baseRanges) do
+    local lastUnused = allRanges[#allRanges][2] + 1
+    local currentStart = range[1]
+
+    if lastUnused < currentStart then
+      table.insert(allRanges, { lastUnused, currentStart - 1 })
+    end
+
+    table.insert(allRanges, { currentStart, range[2] })
+  end
+
+  table.insert(allRanges, { math.max(unpack(allLimits)) + 1, math.huge })
+
+  return allRanges
+end
+
+local function getMappingRanges(mappingData)
+  local baseRanges = { {}, {} }
+
+  for _, mapping in ipairs(mappingData) do
+    local destination, source, length = unpack(mapping)
+    local sourceRange = { source, source + length - 1 }
+    local destinationRange = { destination, destination + length - 1 }
+
+    table.insert(baseRanges[1], sourceRange)
+    table.insert(baseRanges[2], destinationRange)
+  end
+
+  local fullRanges = {}
+
+  for _, ranges in ipairs(baseRanges) do
+    table.insert(fullRanges, getFullRanges(ranges))
+  end
+
+  return fullRanges
+end
+
+local function getAllRanges()
+  local ranges = { getStartRanges(data.seeds) }
+
+  for _, mappingData in ipairs(data.maps) do
+    local stageRanges = getMappingRanges(mappingData)
+
+    for _, item in ipairs(stageRanges) do
+      table.insert(ranges, item)
+    end
+  end
+
+  return ranges
+end
+
+local function foldRanges()
+  local ranges = getAllRanges()
+
+  local current = ranges[1]
+  print(current)
+
+  for _, item in ipairs(util.slice(ranges, 2, #ranges)) do
+    print(item)
+  end
+
+  --temp
+  return { { 1 } }
+end
+
+local solution2 = foldRanges()[1][1]
 
 print("Part 2:", solution2)

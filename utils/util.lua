@@ -200,6 +200,33 @@ function util.find(list, predicate)
   return nil
 end
 
+function util.flat(list, depth)
+  depth = depth or 1
+
+  local flattened = {}
+
+  for _, item in ipairs(list) do
+    if type(item) ~= "table" then
+      table.insert(flattened, item)
+    else
+      if depth > 0 then
+        for _, listItem in ipairs(util.flat(item, depth - 1)) do
+          table.insert(flattened, listItem)
+        end
+      else
+        table.insert(flattened, item)
+      end
+    end
+  end
+
+  return flattened
+end
+
+function util.sort(list, comparator)
+  table.sort(list, comparator)
+  return list
+end
+
 function util.toDecimal(x)
   return tonumber(x, 10)
 end
