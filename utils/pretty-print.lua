@@ -1,3 +1,4 @@
+unpack = unpack or table.unpack
 local rawPrint = print
 
 local styles = {
