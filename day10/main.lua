@@ -34,9 +34,9 @@ local function getNeighbors(shape, x, y)
   local neighbors = {}
 
   for _, dir in ipairs(dirs[shape]) do
-    table.insert(neighbors, (x + dir.dx .. ":" .. y + dir.dy))
     table.insert(neighbors, pointToLabel(x + dir.dx, y + dir.dy))
   end
+
   return neighbors
 end
 
