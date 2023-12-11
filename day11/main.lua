@@ -41,7 +41,6 @@ end
 
 local function getSumOfDistances()
   local sum = 0
-
   local used = {}
 
   for i, a in ipairs(input.points) do
