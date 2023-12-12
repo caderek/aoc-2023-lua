@@ -3,8 +3,7 @@ local util = require("utils.util")
 
 -- PARSING
 
--- local input = util.readInput()
-local input = util.readInput("example.txt")
+local input = util.readInput()
 local parts = util.split(input, "\n\n")
 
 local data = {
@@ -53,11 +52,9 @@ print("Part 1:", solution1)
 -- PART 2
 
 local function sortRanges(ranges)
-  table.sort(ranges, function(a, b)
+  return util.sort(ranges, function(a, b)
     return a[1] < b[1]
   end)
-
-  return ranges
 end
 
 local function getStartRanges(seeds)
@@ -66,78 +63,101 @@ local function getStartRanges(seeds)
   end))
 end
 
-local function getFullRanges(baseRanges)
-  -- sortRanges(baseRanges)
+local function getRangeShifts(maps)
+  local pipeline = {}
 
-  local allRanges = {}
+  for _, mappingData in ipairs(maps) do
+    local shifts = {}
 
-  local allLimits = util.flat(baseRanges)
-
-  table.insert(allRanges, { -math.huge, math.min(unpack(allLimits)) - 1 })
-
-  for _, range in ipairs(baseRanges) do
-    local lastUnused = allRanges[#allRanges][2] + 1
-    local currentStart = range[1]
-
-    if lastUnused < currentStart then
-      table.insert(allRanges, { lastUnused, currentStart - 1 })
+    for _, mapping in ipairs(mappingData) do
+      local destination, source, length = unpack(mapping)
+      local shift = destination - source
+      local transformation = { source, source + length - 1, shift }
+      table.insert(shifts, transformation)
     end
 
-    table.insert(allRanges, { currentStart, range[2] })
+    table.insert(pipeline, sortRanges(shifts))
   end
 
-  table.insert(allRanges, { math.max(unpack(allLimits)) + 1, math.huge })
-
-  return allRanges
+  return pipeline
 end
 
-local function getMappingRanges(mappingData)
-  local baseRanges = { {}, {} }
+local function getOverlap(range, transformation)
+  local fromA, toA = unpack(range)
+  local fromB, toB, shift = unpack(transformation)
+  local startDiff = fromA - fromB
+  local finishDiff = toA - toB
 
-  for _, mapping in ipairs(mappingData) do
-    local destination, source, length = unpack(mapping)
-    local sourceRange = { source, source + length - 1 }
-    local destinationRange = { destination, destination + length - 1 }
+  local overlapStart = math.max(fromB + startDiff, fromB)
+  local overlapEnd = math.min(toB + finishDiff, toB)
 
-    table.insert(baseRanges[1], sourceRange)
-    table.insert(baseRanges[2], destinationRange)
+  if overlapStart > overlapEnd then
+    return nil
   end
 
-  local fullRanges = {}
-
-  for _, ranges in ipairs(baseRanges) do
-    table.insert(fullRanges, getFullRanges(ranges))
-  end
-
-  return fullRanges
+  return {
+    range = { overlapStart + shift, overlapEnd + shift },
+    used = { overlapStart, overlapEnd },
+  }
 end
 
-local function getAllRanges()
-  local ranges = { getStartRanges(data.seeds) }
+local function getUnused(range, used)
+  used = sortRanges(used)
 
-  for _, mappingData in ipairs(data.maps) do
-    local stageRanges = getMappingRanges(mappingData)
+  local unused = {}
+  local x = range[1]
 
-    for _, item in ipairs(stageRanges) do
-      table.insert(ranges, item)
+  for _, item in ipairs(used) do
+    local len = item[1] - x
+
+    if len > 0 then
+      table.insert(unused, { x, x + len - 1 })
+    end
+
+    x = item[2] + 1
+  end
+
+  if x < range[2] then
+    table.insert(unused, { x, range[2] })
+  end
+
+  return unused
+end
+
+local function foldOnce(rangeShifts, ranges)
+  local done = {}
+
+  for _, range in ipairs(ranges) do
+    local used = {}
+
+    for _, transformation in ipairs(rangeShifts) do
+      local overlap = getOverlap(range, transformation)
+
+      if overlap then
+        table.insert(done, overlap.range)
+        table.insert(used, overlap.used)
+      end
+    end
+
+    for _, unused in ipairs(getUnused(range, used)) do
+      table.insert(done, unused)
     end
   end
 
-  return ranges
+  return done
 end
 
 local function foldRanges()
-  local ranges = getAllRanges()
+  local pipeline = getRangeShifts(data.maps)
+  local ranges = getStartRanges(data.seeds)
 
-  local current = ranges[1]
-  print(current)
-
-  for _, item in ipairs(util.slice(ranges, 2, #ranges)) do
-    print(item)
+  for _, rangeShifts in ipairs(pipeline) do
+    ranges = foldOnce(rangeShifts, ranges)
   end
 
-  --temp
-  return { { 1 } }
+  local sorted = sortRanges(ranges)
+
+  return sorted
 end
 
 local solution2 = foldRanges()[1][1]

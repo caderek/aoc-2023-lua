@@ -223,8 +223,15 @@ function util.flat(list, depth)
 end
 
 function util.sort(list, comparator)
-  table.sort(list, comparator)
-  return list
+  local copy = {}
+
+  for _, item in ipairs(list) do
+    table.insert(copy, item)
+  end
+
+  table.sort(copy, comparator)
+
+  return copy
 end
 
 function util.toDecimal(x)
